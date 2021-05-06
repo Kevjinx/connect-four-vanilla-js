@@ -1,14 +1,14 @@
-import Game from "./game.js";
+import {Game} from "./game.js";
 
 let game = undefined;
 
 const updateUI = () => {
-  const gameName = document.getElementById("game-name");
+  let gameName = document.getElementById("game-name");
   const boardHolder = document.getElementById("board-holder");
   game === undefined
     ? boardHolder.add.className("is-invisible")
-    : boardHolder.removeClass("is-invisible");
-  gameName.innerHTML = getName();
+    : boardHolder.classList.remove("is-invisible");
+  gameName.innerHTML = game.getName();
   for (let r = 0; r < 6; r++) {
     for (let c = 0; c < 7; c++) {
       const square = document.getElementById(`square-${r}-${c}`);
@@ -28,24 +28,24 @@ window.addEventListener("DOMContentLoaded", (e) => {
   const p1Name = document.getElementById("player-1-name");
   const p2Name = document.getElementById("player-2-name");
   const clickTargetContainer = document.getElementById("click-targets");
-  p1NameValue = p1Name;
-  p2NameValue = p2Name;
   const newGameBtn = document.getElementById("new-game");
 
-  p1Name.addEventListener("keyup", () =>
-    p1NameValue ? (newGameBtn.disabled = false) : (newGameBtn.disabled = true)
-  );
-  p2Name.addEventListener("keyup", () =>
-    p2NameValue ? (newGameBtn.disabled = false) : (newGameBtn.disabled = true)
-  );
+  p1Name.addEventListener("keyup", () =>{
+    p2Name.value ? (newGameBtn.disabled = false) : (newGameBtn.disabled = true)
+  });
+  p2Name.addEventListener("keyup", () =>{
+    p1Name.value ? (newGameBtn.disabled = false) : (newGameBtn.disabled = true)
+  });
 
   newGameBtn.addEventListener("click", () => {
-    game = new Game(p1NameValue, p2NameValue);
-    p1NameValue = "";
-    p2NameValue = "";
+    game = new Game(p1Name.value, p2Name.value);
+    p1Name.value = "";
+    p2Name.value = "";
     newGameBtn.disabled = true;
     updateUI();
   });
+
+  let columnIsFullPlaceholder = false; //!
 
   clickTargetContainer.addEventListener("focus", (e) => {
     columnIsFullPlaceholder
@@ -79,7 +79,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
     //div = <div class="token red"></div>
     //condition or access player's color for class name
     const newTokenDiv = document.createElement("div");
-    const columnDiv = document.getElementById(placeholderForTheSpecificColumn);
+    // const columnDiv = document.getElementById(placeholderForTheSpecificColumn);
     newTokenDiv.classList.add(
       "token",
       game.currentPlayer === 1 ? "red" : "black"

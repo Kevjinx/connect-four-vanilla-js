@@ -1,3 +1,4 @@
+
 //fills bottom up
 //where's the next available square for this next token to fall into?
 //game will an arr with 7 instances of Column class
@@ -8,6 +9,7 @@ export class Column{
     this.colNum = colNum
   }
   add(currentPlayerNum){
+    console.log('adding ' + currentPlayerNum);
     //!store currentPlayerNum to bottommost entry in column
   }
   getTokenAt(row) {
